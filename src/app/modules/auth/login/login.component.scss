@@ -1,0 +1,17 @@
+@import "primeflex/primeflex.css";
+:host ::ng-deep {
+  .p-password input {
+    width: 100%;
+  }
+  
+  // Asegura que el botón tenga los estilos correctos desde el inicio
+  .p-button {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  // Estilos consistentes para los inputs
+  .p-inputtext {
+    width: 100%;
+  }
+}
