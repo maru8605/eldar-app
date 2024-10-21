@@ -1,0 +1,26 @@
+
+
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen">
+    <p-toast position="top-right"></p-toast>
+    <div class="surface-card p-4 shadow-2 border-round w-full sm:w-24rem">
+        <h2 class="text-center mb-4">Iniciar sesión</h2>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+                <label for="email" class="block text-900 font-medium mb-2">Correo electrónico</label>
+                <input id="email" type="text" pInputText class="w-full" formControlName="email" />
+                <small class="p-error block mt-1" *ngIf="isFieldInvalid('email')">
+                    {{ getErrorMessage('email') }}
+                </small>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="block text-900 font-medium mb-2">Contraseña</label>
+                <p-password id="password" formControlName="password" [feedback]="false" [toggleMask]="true" styleClass="w-full" inputStyleClass="w-full" />
+                <small class="p-error block mt-1" *ngIf="isFieldInvalid('password')">
+                    {{ getErrorMessage('password') }}
+                </small>
+            </div>
+
+            <p-button type="submit" label="Iniciar sesión" styleClass="w-full" [disabled]="loginForm.invalid"></p-button>
+        </form>
+    </div>
+</div>
