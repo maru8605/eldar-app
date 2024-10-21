@@ -64,6 +64,12 @@ export class LoginComponent implements OnInit {
           })
           .catch((error) => {
             console.error('Error al iniciar sesión:', error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Ocurrio un error al iniciar sesión',
+              life: 5000,
+            });
           });
       }
     } else {
