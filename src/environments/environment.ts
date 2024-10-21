@@ -8,4 +8,5 @@ export const environment = {
     messagingSenderId: '1064326821943',
     appId: '1:1064326821943:web:c1cb340171b1af6985e7b2',
   },
+  url: 'https://jsonplaceholder.typicode.com/posts/',
 };

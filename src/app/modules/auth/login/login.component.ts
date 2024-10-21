@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Toast, ToastModule } from 'primeng/toast';
 
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -27,6 +28,7 @@ import { Toast, ToastModule } from 'primeng/toast';
 })
 export class LoginComponent implements OnInit {
   @ViewChild('toast', { static: false }) toast: Toast | undefined;
+  userId!:string
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
@@ -46,19 +48,17 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      console.log('Email:', email);
-      console.log('Password:', password);
-      // Llamada al método de inicio de sesión
+     
       if (email && password) {
         this.authService
           .login(email, password)
-          .then(() => {
-            console.log('Inicio de sesión exitoso');
+          .then((user) => {
+            
             this.messageService.add({
               severity: 'success',
               summary: 'Éxito',
               detail: 'Inicio de sesión exitoso',
-              life: 5000,
+              life: 3000,
             });
             this.router.navigate(['/home']);
           })
@@ -71,9 +71,10 @@ export class LoginComponent implements OnInit {
               life: 5000,
             });
           });
+        
+       
       }
     } else {
-      console.log('Formulario inválido');
       this.loginForm.markAllAsTouched();
     }
   }

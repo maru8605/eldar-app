@@ -1,27 +1,58 @@
-# EldarApp
+# Proyecto Angular con Firebase
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.3.
+Este proyecto es una aplicación Angular que utiliza Firebase para la autenticación de usuarios y un interceptor para manejar tokens.
 
-## Development server
+## Requisitos Previos
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Asegúrate de tener instalados los siguientes programas en tu máquina:
 
-## Code scaffolding
+- [Node.js](https://nodejs.org/) (versión 14 o superior)
+- [Angular CLI](https://angular.io/cli) (instalación: `npm install -g @angular/cli`)
+- [Firebase CLI](https://firebase.google.com/docs/cli) (instalación: `npm install -g firebase-tools`)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Pasos para Levantar el Proyecto 
 
-## Running unit tests
+1. **Clonar el Repositorio**
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+   Clona el repositorio en tu máquina local:
 
-## Running end-to-end tests
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   cd <NOMBRE_DEL_REPOSITORIO>
+   ```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+2. **Instalar Dependencias**
 
-## Further help
+   Navega al directorio del proyecto y ejecuta el siguiente comando para instalar las dependencias:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+   ```bash
+   npm install
+   ```
+## Si queres usar tus credenciales 
+
+3. **Configurar Firebase**
+
+   - Crea un proyecto en [Firebase Console](https://console.firebase.google.com/).
+   - Agrega una aplicación web y copia la configuración de Firebase.
+   - Reemplaza la configuración en `src/environments/environment.ts` con la configuración de tu proyecto de Firebase.
+
+4. **Iniciar el Servidor de Desarrollo**
+
+   Ejecuta el siguiente comando para iniciar el servidor de desarrollo:
+
+   ```bash
+   ng serve
+   ```
+
+   La aplicación estará disponible en `http://localhost:4200/`.
+
+5. **Acceder a la Aplicación**
+
+   Abre tu navegador y navega a `http://localhost:4200/` para ver la aplicación en funcionamiento.
+
+## Sino podes usar las siguientes credenciales 
+**user** : admin-test@test.com | 12345678
+           user-test@test.com  | 12345678
+

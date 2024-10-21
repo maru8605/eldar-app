@@ -1,1 +1,119 @@
-<p>home works!</p>
+<app-menu></app-menu>
+
+<div class="p-grid p-fluid container">
+  <div class="flex justify-content-end p-col-12" *ngIf="rol === 'admin'">
+    <p-button label="Nuevo post" (click)="createNewPost()" icon="pi pi-plus-circle"/>
+  </div>
+
+  <div class="p-col-12">
+    <div class="p-inputgroup group">
+      <input 
+        type="text" 
+        pInputText 
+        [(ngModel)]="searchTerm" 
+        (input)="updatePaginatedData()" 
+        placeholder="Buscar post por título" 
+        
+        
+      />
+      <p-button 
+        (click)="restoreData()" 
+        icon="pi pi-refresh" 
+        styleClass="ml-3"
+       
+      />
+    </div>
+  </div>
+  
+  <div class="p-col-12 table-container">
+    <p-table [value]="paginatedData">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-post>
+        <tr>
+          <td>{{ post.title }}</td>
+          <td>{{ post.body.substring(0, 10) }}...</td>
+          <td>
+            <p-button 
+              *ngIf="getPost"
+              (click)="getPost(post)" 
+              severity="info" 
+              icon="pi pi-eye" 
+              styleClass="mr-2 mb-1" 
+              pTooltip="Ver post" 
+              tooltipPosition="left" 
+              class="margin-botton"
+            />
+            <p-button *ngIf="rol === 'admin'"
+              (click)="editPost(post)" 
+              icon="pi pi-file-edit" 
+              pTooltip="Editar post" 
+              tooltipPosition="right" 
+              styleClass="mr-2 mb-1" 
+            />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-paginator 
+      [rows]="rows" 
+      [totalRecords]="totalRecords" 
+      [pageLinkSize]="3" 
+      (onPageChange)="onPageChange($event)">
+    </p-paginator>
+  </div>
+</div>
+
+<p-dialog 
+    header="Header" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [style]="{ width: '25rem' }">
+        <ng-template pTemplate="header">
+            <div class="inline-flex align-items-center justify-content-center gap-2">
+                <span class="font-bold white-space-nowrap">
+                   {{formTitle}}
+                </span>
+            </div>
+        </ng-template>
+        <form [formGroup]="postForm" (ngSubmit)="savePost()">
+        <input type="hidden" formControlName="id" /> 
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="title" class="font-semibold w-6rem">
+                Titulo
+            </label>
+            <input pInputText id="title" class="flex-auto" autocomplete="off" formControlName="title" />
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <label for="description" class="font-semibold w-6rem">Descripcion</label>
+            <textarea 
+                rows="5"
+                cols="30" 
+                pInputTextarea 
+                id="description" 
+                class="flex-auto" 
+                autocomplete="off" 
+                formControlName="description">
+            </textarea>
+        </div>
+        <div class="flex align-items-end gap-3 mb-5" >
+            <p-button 
+                label="Cancelar" 
+                [text]="true" 
+                severity="secondary" 
+                (onClick)="visible = false" />
+            <p-button 
+                label="{{saveButton}}" 
+                [outlined]="true" 
+                type="submit"
+                [disabled]="postForm.invalid"
+            />
+        </div>
+    </form>
+</p-dialog>
