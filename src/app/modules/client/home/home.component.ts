@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { DataService } from '../../../shared/services/data/data.service';
 import { AuthService } from '../../../shared/services/auth/auth.service';
-import { Post } from '../../../shared/models/data/data.model';
+import { Post, UserData } from '../../../shared/models/data/data.model';
+
 
 import { TableModule } from 'primeng/table';
 import { MenuComponent } from '../../../shared/components/menu/menu.component';
 import { ButtonModule } from 'primeng/button';
-import { Observable } from 'rxjs';
 import { PaginatorModule } from 'primeng/paginator';
 import { TooltipModule } from 'primeng/tooltip';
+import { CommonModule } from '@angular/common';
+import { InputTextModule } from 'primeng/inputtext';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-home',
@@ -19,20 +22,25 @@ import { TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     PaginatorModule,
     TooltipModule,
+    CommonModule,
+    InputTextModule,
+    DialogModule,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  data!: Post[]; // Almacena todos los datos
-  paginatedData!: Post[]; // Almacena los datos paginados
-  totalRecords: number = 0; // Total de registros
-  rows: number = 10; // Número de registros por página
-  currentPage: number = 1; // Página actual
-  searchTerm: string = ''; // Término de búsqueda
-  userData$!: Observable<any | null>;
-  username: string = 'Usuario';
+  data!: Post[];
+  paginatedData!: Post[];
+  totalRecords: number = 0;
+  rows: number = 10;
+  currentPage: number = 1;
+  searchTerm: string = '';
+  username: string = '';
   userId!: string | null;
+  userData!: UserData;
+  rol!: string;
+  visible: boolean = false;
 
   constructor(
     private _dataService: DataService,
@@ -40,31 +48,28 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('hola desde home');
     this._dataService.getData().subscribe((data) => {
-      console.log(data);
       this.data = data;
-      this.totalRecords = this.data.length; // Total de registros
-      this.updatePaginatedData(); // Actualiza los datos paginados
-      console.log(this.paginatedData);
+      this.totalRecords = this.data.length;
+      this.updatePaginatedData();
     });
 
-    const userId = localStorage.getItem('userId');
-    console.log(userId);
-    if (userId) {
-      this.userData$ = this.authService.getUserDataById(userId);
-      console.log(this.userData$);
-    }
+    const userData = localStorage.getItem('userData');
+    const parseUserData = JSON.parse(userData!);
+
+    this.username = parseUserData.name;
+    console.log(this.username);
+    this.rol = parseUserData.rol;
+    console.log(this.rol);
   }
 
-  // Método para actualizar los datos paginados
   updatePaginatedData(): void {
-    const filteredData = this.data.filter(post => 
+    const filteredData = this.data.filter((post) =>
       post.title.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
     const startIndex = (this.currentPage - 1) * this.rows;
     this.paginatedData = filteredData.slice(startIndex, startIndex + this.rows);
-    this.totalRecords = filteredData.length; // Actualiza el total de registros filtrados
+    this.totalRecords = filteredData.length;
   }
 
   // Método que se llama cuando se cambia de página
@@ -83,8 +88,10 @@ export class HomeComponent implements OnInit {
     console.log('chau');
   }
 
-  crearNuevoPost() {
+  createNewPost() {
     console.log('crear');
+    this.visible = true;
+    console.log('this.vis', this.visible)
   }
 
   editar(post: any) {

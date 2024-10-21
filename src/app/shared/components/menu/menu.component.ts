@@ -23,11 +23,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
-  username: string = 'Admin 2';
+  username: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    const userData = localStorage.getItem('userData');
+    const parseUserData = JSON.parse(userData!);
+
+    this.username = parseUserData.name;
+    console.log(this.username);
+     
+  }
 
   logout() {
     console.log('Cerrando sesión...');

@@ -47,16 +47,12 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      console.log('Email:', email);
-      console.log('Password:', password);
      
       if (email && password) {
         this.authService
           .login(email, password)
           .then((user) => {
-            this.userId = user.uid
-            console.log('Usuario logueado:', user)
-            console.log('Inicio de sesión exitoso');
+            
             this.messageService.add({
               severity: 'success',
               summary: 'Éxito',
@@ -64,6 +60,7 @@ export class LoginComponent implements OnInit {
               life: 3000,
             });
             this.router.navigate(['/home']);
+            console.log('hola')
           })
           .catch((error) => {
             console.error('Error al iniciar sesión:', error);
