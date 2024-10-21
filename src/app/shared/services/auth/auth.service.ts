@@ -3,10 +3,11 @@ import { Auth, signInWithEmailAndPassword, signOut, onAuthStateChanged, User } f
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  private userSubject: BehaviorSubject<User | null> =
+    new BehaviorSubject<User | null>(null);
   user$: Observable<User | null> = this.userSubject.asObservable();
 
   constructor(private auth: Auth) {
@@ -40,4 +41,5 @@ export class AuthService {
       });
     });
   }
+  
 }

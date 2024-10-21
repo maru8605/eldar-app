@@ -1,0 +1,12 @@
+<div class="card">
+    <p-menubar >
+        <ng-template pTemplate="end">
+            <div class="flex align-items-center">
+                <span>{{ username }}</span>
+                <button (click)="logout()" class="p-button p-button-text ml-2">
+                    <i class="pi pi-sign-out"></i>
+                </button>
+            </div>
+        </ng-template>
+    </p-menubar>
+</div>

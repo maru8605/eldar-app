@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Toast, ToastModule } from 'primeng/toast';
 
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -23,7 +24,7 @@ import { Toast, ToastModule } from 'primeng/toast';
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  providers: [MessageService],
+  providers: [ MessageService],
 })
 export class LoginComponent implements OnInit {
   @ViewChild('toast', { static: false }) toast: Toast | undefined;
