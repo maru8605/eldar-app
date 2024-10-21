@@ -8,12 +8,7 @@ import {
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
-interface UserData {
-  id: string;
-  name: string;
-  rol: string;
-  email: string;
-}
+
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +24,7 @@ export class AuthService implements OnInit {
   public userData$: Observable<any | null> =
     this.userDataSubject.asObservable();
   private mockData: any[] = [];
+
 
   constructor(private auth: Auth, private http: HttpClient) {}
 
@@ -47,10 +43,13 @@ export class AuthService implements OnInit {
       )
       .subscribe((data) => {
         this.mockData = data;
+
         const userId = id.toString();
+
         const userData = this.mockData.find((user) => {
           return user.id == userId;
         });
+
         localStorage.setItem('userData', JSON.stringify(userData));
       });
   }

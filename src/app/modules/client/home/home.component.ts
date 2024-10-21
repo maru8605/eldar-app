@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
   rol!: string;
   visible: boolean = false;
   formTitle: string = '';
-  getPosts:boolean= false
+  saveButton:string = ''
 
   postForm = new FormGroup({
     title: new FormControl('', [Validators.required]),
@@ -98,7 +98,8 @@ export class HomeComponent implements OnInit {
   createNewPost() {
     this.visible = true;
     this.formTitle = 'Nuevo post';
-    this.getPosts = false;
+    this.saveButton = 'Guardar';
+  
   }
 
   editPost(post: any) {
@@ -107,18 +108,19 @@ export class HomeComponent implements OnInit {
       description: post.body,
       id: post.id,
     });
-    this.getPosts = false;
+    this.saveButton = 'Guardar';
     this.formTitle = 'Editar post';
     this.visible = true;
   }
 
   getPost(post: any) {
-    this.getPosts = true;
+
     this.postForm.patchValue({
       title: post.title,
       description: post.body,
       id: post.id,
     });
+    this.saveButton= 'Ok'
     this.formTitle = 'Ver post';
     this.visible = true;
   }
