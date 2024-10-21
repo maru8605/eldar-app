@@ -1,0 +1,15 @@
+[
+  {
+    "id": "iFNyLyKsxlWwbynkzeiUw0ByNlo2",
+    "name": "Admin",
+    "rol" :"admin",
+    "email": "admin-test@test.com"
+  },
+    {
+      "id": "0pzBnOQjOIQhpmYwxv9VDoRacql2",
+      "name": "User",
+      "rol": "user",
+      "email": "user-test@test.com"
+    }
+
+]

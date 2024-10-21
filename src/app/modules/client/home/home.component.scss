@@ -1,6 +1,19 @@
 .container{
   margin: 30px 10%;
+  @media (max-width: 768px) { 
+    margin: 30px 2%; 
+  }
 }
 .table-container{
   margin-top: 24px;
+}
+.p-inputgroup {
+  position: relative; 
+}
+
+.restore-button {
+  position: absolute; 
+  top: 50%; 
+  right: 10px; 
+  transform: translateY(-50%); 
 }
