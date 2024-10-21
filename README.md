@@ -19,8 +19,8 @@ Asegúrate de tener instalados los siguientes programas en tu máquina:
    Clona el repositorio en tu máquina local:
 
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
-   cd <NOMBRE_DEL_REPOSITORIO>
+   git clone git@github.com:maru8605/eldar-app.git
+   cd eldar-app
    ```
 
 2. **Instalar Dependencias**
