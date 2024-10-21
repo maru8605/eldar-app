@@ -29,32 +29,14 @@ export class AuthService implements OnInit {
   public userData$: Observable<any | null> =
     this.userDataSubject.asObservable();
   private mockData: any[] = [];
-  private users!: UserData[];
 
-  constructor(private auth: Auth, private http: HttpClient) {
-    // onAuthStateChanged(this.auth, (user) => {
-    //   this.userSubject.next(user);
-    //   if (user) {
-    //     this.userDataSubject.next(user);
-    //     localStorage.setItem('userId', JSON.stringify(user.uid));
-    //     this.userDataSubject.next(null);
-    //     localStorage.removeItem('userId');
-    //   }
-    // });
-    // const storedUserId = localStorage.getItem('userId');
-    // if (storedUserId) {
-    //   console.log('estoy aca', storedUserId.replace(/["']/g, ""));
-    //   this.loadUserData(storedUserId);
-    // }
-  }
+  constructor(private auth: Auth, private http: HttpClient) {}
 
   ngOnInit(): void {
     const storedUserId = JSON.parse(localStorage.getItem('userId')!);
-    console.log('inittttt', storedUserId);
   }
 
   private loadUserData(id: string): void {
-    console.log('id', id);
     this.http
       .get<any[]>(this.jsonUrl)
       .pipe(
@@ -65,40 +47,23 @@ export class AuthService implements OnInit {
       )
       .subscribe((data) => {
         this.mockData = data;
-        console.log(this.mockData);
-
         const userId = id.toString();
-        console.log('Tipo de userId:', userId);
-
         const userData = this.mockData.find((user) => {
-          console.log('comparo:', user.id, 'con:', userId);
           return user.id == userId;
         });
-
-        console.log('Usuario encontrado:', userData);
         localStorage.setItem('userData', JSON.stringify(userData));
       });
   }
 
   async login(email: string, password: string) {
-    console.log('desde auth')
     try {
       const userCredential = await signInWithEmailAndPassword(
         this.auth,
         email,
         password
       );
-      console.log(userCredential);
       if (userCredential) {
-        console.log(
-          'user credential',
-          userCredential.user,
-          userCredential.user.uid,
-          
-
-        );
         localStorage.setItem('userId', userCredential.user.uid);
-        //localStorage.setItem('userToken', userCredential.user.acc)
         this.userSubject.next(userCredential.user);
         this.loadUserData(userCredential.user.uid);
         this.isLoggedIn()
@@ -118,7 +83,6 @@ export class AuthService implements OnInit {
       this.userSubject.next(null);
       this.userDataSubject.next(null);
       localStorage.clear();
-      console.log(this.isLoggedIn);
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
       throw error;
@@ -130,8 +94,6 @@ export class AuthService implements OnInit {
   }
 
   getUserDataById(userId: string): any | null {
-    console.log(userId);
-    console.log(this.mockData);
     const user = this.mockData.find((user) => user.id === userId);
     return user ? user : null;
   }

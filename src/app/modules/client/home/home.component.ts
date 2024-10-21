@@ -1,7 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component,  OnInit } from '@angular/core';
 import { DataService } from '../../../shared/services/data/data.service';
-import { AuthService } from '../../../shared/services/auth/auth.service';
-import { Post, UserData } from '../../../shared/models/data/data.model';
+import { Post, PostData, UserData } from '../../../shared/models/data/data.model';
 
 
 import { TableModule } from 'primeng/table';
@@ -12,6 +11,10 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { ReactiveFormsModule } from '@angular/forms'; 
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @Component({
   selector: 'app-home',
@@ -25,9 +28,12 @@ import { DialogModule } from 'primeng/dialog';
     CommonModule,
     InputTextModule,
     DialogModule,
+    ReactiveFormsModule,
+    InputTextareaModule,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  providers: [MessageService],
 })
 export class HomeComponent implements OnInit {
   data!: Post[];
@@ -39,12 +45,21 @@ export class HomeComponent implements OnInit {
   username: string = '';
   userId!: string | null;
   userData!: UserData;
+  postData!: PostData;
   rol!: string;
   visible: boolean = false;
+  formTitle: string = '';
+  getPosts:boolean= false
+
+  postForm = new FormGroup({
+    title: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
+    id: new FormControl(''),
+  });
 
   constructor(
     private _dataService: DataService,
-    private authService: AuthService
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -56,11 +71,7 @@ export class HomeComponent implements OnInit {
 
     const userData = localStorage.getItem('userData');
     const parseUserData = JSON.parse(userData!);
-
-    this.username = parseUserData.name;
-    console.log(this.username);
     this.rol = parseUserData.rol;
-    console.log(this.rol);
   }
 
   updatePaginatedData(): void {
@@ -72,33 +83,79 @@ export class HomeComponent implements OnInit {
     this.totalRecords = filteredData.length;
   }
 
-  // Método que se llama cuando se cambia de página
+ 
   onPageChange(event: any): void {
-    this.currentPage = event.page + 1; // PrimeNG usa 0-indexed
-    this.updatePaginatedData(); // Actualiza los datos paginados
+    this.currentPage = event.page + 1; 
+    this.updatePaginatedData(); 
   }
 
-  // Método para restaurar la lista completa
+ 
   restoreData(): void {
-    this.searchTerm = ''; // Limpia el término de búsqueda
-    this.updatePaginatedData(); // Actualiza los datos paginados
-  }
-
-  logout() {
-    console.log('chau');
+    this.searchTerm = ''; 
+    this.updatePaginatedData(); 
   }
 
   createNewPost() {
-    console.log('crear');
     this.visible = true;
-    console.log('this.vis', this.visible)
+    this.formTitle = 'Nuevo post';
+    this.getPosts = false;
   }
 
-  editar(post: any) {
-    console.log('editar');
+  editPost(post: any) {
+    this.postForm.patchValue({
+      title: post.title,
+      description: post.body,
+      id: post.id,
+    });
+    this.getPosts = false;
+    this.formTitle = 'Editar post';
+    this.visible = true;
   }
 
-  ver(post: any) {
-    console.log('ver');
+  getPost(post: any) {
+    this.getPosts = true;
+    this.postForm.patchValue({
+      title: post.title,
+      description: post.body,
+      id: post.id,
+    });
+    this.formTitle = 'Ver post';
+    this.visible = true;
+  }
+
+  savePost() {
+    if (this.postForm.valid) {
+      const postData = {
+        title: this.postForm.value.title || '',
+        body: this.postForm.value.description || '',
+        userId: parseInt(this.postForm.value.id || '0', 10), 
+      };
+
+      if (this.postForm.value.id) {
+  
+        this._dataService
+          .updatePost(this.postForm.value.id, postData)
+          .subscribe((resp: any) => {
+            this.visible = false;
+            this.postForm.reset();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Éxito',
+              detail: 'Post actualizado exitosamente!',
+            });
+          });
+      } else {
+        this._dataService.createPost(postData).subscribe((resp) => {
+          this.visible = false;
+          this.data.push(resp)
+          this.postForm.reset();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Post creado exitosamente!',
+          });
+        });
+      }
+    }
   }
 }

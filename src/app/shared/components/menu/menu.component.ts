@@ -32,12 +32,10 @@ export class MenuComponent implements OnInit {
     const parseUserData = JSON.parse(userData!);
 
     this.username = parseUserData.name;
-    console.log(this.username);
      
   }
 
   logout() {
-    console.log('Cerrando sesión...');
     this.authService.logout().then(() => {
       
       this.router.navigate(['/login']);

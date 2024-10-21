@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Toast, ToastModule } from 'primeng/toast';
 
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -60,7 +61,6 @@ export class LoginComponent implements OnInit {
               life: 3000,
             });
             this.router.navigate(['/home']);
-            console.log('hola')
           })
           .catch((error) => {
             console.error('Error al iniciar sesión:', error);
@@ -75,7 +75,6 @@ export class LoginComponent implements OnInit {
        
       }
     } else {
-      console.log('Formulario inválido');
       this.loginForm.markAllAsTouched();
     }
   }

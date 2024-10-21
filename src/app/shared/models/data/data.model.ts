@@ -11,3 +11,9 @@ export interface UserData {
   rol: string
   email:string
 }
+
+export interface PostData {
+  userId: number,
+  title: string,
+  description: string
+}

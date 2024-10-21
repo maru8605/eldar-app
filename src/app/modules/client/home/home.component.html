@@ -40,7 +40,8 @@
           <td>{{ post.body.substring(0, 10) }}...</td>
           <td>
             <p-button 
-              (click)="ver(post)" 
+              *ngIf="getPost"
+              (click)="getPost(post)" 
               severity="info" 
               icon="pi pi-eye" 
               styleClass="mr-2 mb-1" 
@@ -49,7 +50,7 @@
               class="margin-botton"
             />
             <p-button *ngIf="rol === 'admin'"
-              (click)="editar(post)" 
+              (click)="editPost(post)" 
               icon="pi pi-file-edit" 
               pTooltip="Editar post" 
               tooltipPosition="right" 
@@ -76,34 +77,43 @@
     [style]="{ width: '25rem' }">
         <ng-template pTemplate="header">
             <div class="inline-flex align-items-center justify-content-center gap-2">
-                
                 <span class="font-bold white-space-nowrap">
-                    Amy Elsner
+                   {{formTitle}}
                 </span>
             </div>
         </ng-template>
-        <span class="p-text-secondary block mb-5">Update your information.</span>
+        <form [formGroup]="postForm" (ngSubmit)="savePost()">
+        <input type="hidden" formControlName="id" /> 
         <div class="flex align-items-center gap-3 mb-3">
-            <label for="username" class="font-semibold w-6rem">
-                Username
+            <label for="title" class="font-semibold w-6rem">
+                Titulo
             </label>
-            <input pInputText id="username" class="flex-auto" autocomplete="off" />
+            <input pInputText id="title" class="flex-auto" autocomplete="off" formControlName="title" />
         </div>
         <div class="flex align-items-center gap-3 mb-5">
-            <label for="email" class="font-semibold w-6rem">Email</label>
-            <input pInputText id="email" class="flex-auto" autocomplete="off" />
+            <label for="description" class="font-semibold w-6rem">Descripcion</label>
+            <textarea 
+                rows="5"
+                cols="30" 
+                pInputTextarea 
+                id="description" 
+                class="flex-auto" 
+                autocomplete="off" 
+                formControlName="description">
+            </textarea>
         </div>
-        <ng-template pTemplate="footer">
+        <div class="flex align-items-end gap-3 mb-5" >
             <p-button 
-                label="Cancel" 
+                label="Cancelar" 
                 [text]="true" 
                 severity="secondary" 
                 (onClick)="visible = false" />
             <p-button 
-                label="Save" 
+                label="Guardar" 
                 [outlined]="true" 
-                severity="secondary" 
-                (onClick)="visible = false" 
-              />
-        </ng-template>
+                type="submit"
+                [disabled]="postForm.invalid"
+            />
+        </div>
+    </form>
 </p-dialog>
